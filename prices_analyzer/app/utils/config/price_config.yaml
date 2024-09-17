@@ -1,0 +1,8 @@
+price_config:
+  price_min: 1
+  price_max: 10000
+  spread_min: 0.5
+  spread_max: 5
+  price_change_max: 0.10
+assets_file: assets.yaml
+markets_file: markets.yaml

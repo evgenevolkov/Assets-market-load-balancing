@@ -1,0 +1,47 @@
+version: '3'
+services:
+  prices_generator_1_1:
+    build: 
+      context: .
+      dockerfile: prices_generator/Dockerfile
+    ports:
+    - "5011:8000"
+    networks:
+    - network_1
+    env_file: prices_generator/.env
+
+  prices_generator_1_2:
+    build:
+      context: .
+      dockerfile: prices_generator/Dockerfile
+    ports:
+    - "5012:8000"
+    networks:
+    - network_1
+    env_file: prices_generator/.env
+
+  prices_generator_2_1:
+    build:
+      context: .
+      dockerfile: prices_generator/Dockerfile
+    ports:
+    - "5021:8000"
+    networks:
+    - network_1
+    env_file: prices_generator/.env
+
+  nginx:
+    build: ./nginx 
+    ports:
+    - "8000:80"    # exposed port for API calls
+    - "8081:8081"  # for nginx_status
+    depends_on:
+      - prices_generator_1_1
+      - prices_generator_1_2
+      - prices_generator_2_1
+    networks:
+    - network_1
+
+networks:
+  network_1:
+    driver: bridge
