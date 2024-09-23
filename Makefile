@@ -6,7 +6,7 @@ menu:
 	select opt in "Start generator with Nginx" "Start generator as standalone app" \
 				  "Start analyzer" "Build generator container" \
 				  "Start generator container" "Stop generator container" \
-				  "Clean" "Exit"; do \
+				  "Run tests" "Clean" "Exit"; do \
 	    case $$opt in \
 	        ("Start generator with Nginx") make start_generator_nginx; break;; \
 	        ("Start generator as standalone app") make start_generator_app; break;; \
@@ -14,6 +14,7 @@ menu:
 	        ("Build generator container") make build_generator_container; break;; \
 	        ("Start generator container") make start_generator_container; break;; \
 	        ("Stop generator container") make stop_generator_container; break;; \
+	        ("Run tests") make run_tests; break;; \
 	        ("Clean") make clean; break;; \
 	        ("Exit") exit;; \
 	        (*) echo "Invalid option";; \
@@ -45,6 +46,9 @@ start_generator_container:
 
 stop_generator_container:
 	docker stop prices_generator || true
+
+run_tests:
+	PYTHONPATH=$(shell pwd)/prices_generator pytest -s
 
 clean:
 	docker stop prices_generator || true
