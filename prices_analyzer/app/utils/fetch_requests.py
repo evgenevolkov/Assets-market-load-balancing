@@ -1,6 +1,7 @@
 """Module responsible for fetching data from an API endpoint
 """
 import asyncio
+from typing import Optional, Union
 from decouple import config
 import httpx
 
@@ -19,18 +20,16 @@ class PriceFetcher:
     """
     def __init__(
             self,
-            host: str = None,
-            port: str = None,
-            protocol: str = None,
-            prices_request_interval_s: float = None
+            host: Optional[str] = None,
+            port: Optional[str] = None,
+            protocol: Optional[str] = None,
             ):
         self.prices_source_protocol = protocol or config('PRICES_SOURCE_PROTOCOL', default="http")
         self.prices_source_host = host or config('PRICES_SOURCE_HOST')
         self.prices_source_port = port or config('PRICES_SOURCE_PORT')
         self._get_api_url_template()
 
-
-    def _get_api_url_template(self):
+    def _get_api_url_template(self) -> None:
         self.api_url_template: str = (
             f"{self.prices_source_protocol}://{self.prices_source_host}:"
             + f"{self.prices_source_port}"
@@ -42,8 +41,7 @@ class PriceFetcher:
         """construct api url reying on template and provided values"""
         return self.api_url_template.format(asset=asset, market=market)
 
-
-    async def fetch_price(self, asset: str, market: str):
+    async def fetch_price(self, asset: str, market: str) -> Union[schemas.AssetPriceFromApi, None]:
         asset_data = None
         try:
             async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:

@@ -5,7 +5,7 @@ Consists of a class, responsible for keeping track of highest and lowest
 detected prices and performing arbitrage detection
 """
 import asyncio
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from ..utils import schemas
 from ..utils.logger import get_logger
@@ -24,10 +24,10 @@ class ArbitrageDetector:
     - Provided a new price for an asset, detect arbitrage opportunity
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.prices_dict: Dict[str, schemas.AssetData] = {}
-        self.assets_list: List[str] = None
-        self.markets_list: List[str] = None
+        self.assets_list: Optional[List[str]] = None
+        self.markets_list: Optional[List[str]] = None
         self.lock = asyncio.Lock()
         self._set_assets_list()
         self._set_markets_list()
