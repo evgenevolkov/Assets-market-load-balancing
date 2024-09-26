@@ -64,3 +64,9 @@ class AssetData(BaseModel):
 
 class checkResponse(AssetData):
     message: str    """Arbitrage detector response data model"""
+
+
+class ArbitrageDetectorResponse(BaseModel):
+    """Arbitrage detector response data model"""
+    arbitrage_found: bool = False
+    details: list[dict[str, str]] = []
