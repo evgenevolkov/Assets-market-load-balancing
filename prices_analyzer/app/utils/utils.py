@@ -18,5 +18,7 @@ def load_yaml_file(file_path: str) -> dict:
         logger.error(f"Failed to parse YAML file {file_path}: {e}")
         raise
     except Exception as e:
-        logger.error(f"Unexpected error when loading YAML file {file_path}: {e}")
+        logger.error(
+            "Unexpected error when trying to load YAML file"
+            f" {file_path}: {e}")
         raise

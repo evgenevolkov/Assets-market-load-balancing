@@ -52,10 +52,13 @@ class ArbitrageDetector:
                 location_buy="US",
                 location_sell="US")
 
-    async def check_for_arbitrage(self,
-                                  asset_price: schemas.AssetPriceFromApi) -> schemas.ArbitrageDetectorResponse:
-        """Compares provided asset price with current stored price and 
-        provides a response indicating if an arbitrage opportunity is detected 
+    async def check_for_arbitrage(
+            self,
+            asset_price: schemas.AssetPriceFromApi
+            ) -> schemas.ArbitrageDetectorResponse:
+        """Compares provided asset price with current stored price and
+        provides a response indicating if an arbitrage opportunity is
+        detected
         """
 
         response = schemas.ArbitrageDetectorResponse()
@@ -68,45 +71,62 @@ class ArbitrageDetector:
             curr_price_buy = asset_data.price_buy
             curr_price_sell = asset_data.price_sell
 
-            new_price_buy = round(asset_price.price * (1 + asset_price.spread / 100), 4)
-            new_price_sell = round(asset_price.price * (1 - asset_price.spread / 100), 4)
+            new_price_buy = round(
+                asset_price.price * (1 + asset_price.spread / 100),
+                4)
+            new_price_sell = round(
+                asset_price.price * (1 - asset_price.spread / 100),
+                4)
             new_location = asset_price.market
 
-            if new_price_buy < curr_price_sell and asset_data.location_sell != new_location:
-                message = ("Arbitrage possibility detected:"
-                            + f" Buy {asset_price.name} from {new_location} for {new_price_buy}"
-                            + f", sell at {asset_data.location_sell} for {curr_price_sell}"
-                            + f", margin: {round(curr_price_sell - new_price_buy, 4)}")
-                response["details"].append({"message": message})
+            if (new_price_buy < curr_price_sell
+                    and asset_data.location_sell != new_location):
+                message = (
+                    "Arbitrage possibility detected:"
+                    f" Buy {asset_price.name} from {new_location}"
+                    f" for {new_price_buy}"
+                    f", sell at {asset_data.location_sell}"
+                    f" for {curr_price_sell}, margin:"
+                    f" {round(curr_price_sell - new_price_buy, 4)}")
                 logger.info(message)
                 response.details.append({"message": message})
                 response.arbitrage_found = True
 
-            if new_price_sell > curr_price_buy and asset_data.location_buy != new_location:
-                message = ("Arbitrage possibility detected:"
-                            + f" Buy {asset_price.name} from {asset_data.location_buy} for {curr_price_buy}"
-                            + f", sell at {new_location} for {new_price_sell}"
-                            + f", margin: {round(new_price_sell - curr_price_buy, 4)}")
+            if (new_price_sell > curr_price_buy
+                    and asset_data.location_buy != new_location):
+                message = (
+                    "Arbitrage possibility detected:"
+                    f" Buy {asset_price.name} from {asset_data.location_buy}"
+                    f" for {curr_price_buy},"
+                    f" sell at {new_location} for {new_price_sell},"
+                    f" margin: {round(new_price_sell - curr_price_buy, 4)}")
                 logger.info(message)
                 response.details.append({"message": message})
                 response.arbitrage_found = True
 
         return response
 
-
-    async def price_update(self, asset_data: schemas.AssetPriceFromApi) -> None:
-        """Asyncroneous wrapper over function implementation. Adds timeout functionality 
-        to drop execution if takes much longer than expected"""
+    async def price_update(self,
+                           asset_data: schemas.AssetPriceFromApi
+                           ) -> None:
+        """Asyncroneous wrapper over function implementation. Adds
+        timeout functionality to drop execution if takes much longer
+        than expected"""
         try:
-            # timeout to avoid hanging
-            await asyncio.wait_for(self._price_update_internal(asset_data), timeout=2.0)
+            # timeout to to prevent long wait time
+            await asyncio.wait_for(self._price_update_internal(asset_data),
+                                   timeout=2.0)
         except asyncio.TimeoutError:
-            logger.error(f"Timeout during price update for {asset_data.name} in {asset_data.market}")
+            logger.error(
+                f"Timeout during price update for {asset_data.name}"
+                f" in {asset_data.market}")
 
         return
 
-
-    async def _price_update_internal(self, asset_data: schemas.AssetPriceFromApi) -> None:
+    async def _price_update_internal(
+            self,
+            asset_data: schemas.AssetPriceFromApi
+            ) -> None:
         """Implementation of price update.
         A price is updated in any of these cases:
         1) the new price comes from the same market as currently stored
@@ -118,30 +138,38 @@ class ArbitrageDetector:
             curr_entry = self.prices_dict.get(asset_data.name, None)
 
             if not curr_entry:
-                logger.error(f"Asset {asset_data.name} not found in prices_dict.")
+                logger.error(
+                    f"Asset {asset_data.name} not found in prices_dict.")
                 return
 
-            new_price_buy = round(asset_data.price * (1 + asset_data.spread / 100), 4)
-            new_price_sell = round(asset_data.price * (1 - asset_data.spread / 100), 4)
+            new_price_buy = round(
+                asset_data.price * (1 + asset_data.spread / 100),
+                4)
+            new_price_sell = round(
+                asset_data.price * (1 - asset_data.spread / 100),
+                4)
             new_location = asset_data.market
 
-            logger.debug((f"Asset: {asset_data.name}, market: {asset_data.market}"
-                            + f" curr_price_buy: {curr_entry.price_buy}"
-                            + f" new_price_buy: {new_price_buy}")
-                            + f" curr_price_sell: {curr_entry.price_sell}"
-                            + f" new_price_sell: {new_price_sell}")
+            logger.debug((
+                f"Asset: {asset_data.name}, market: {asset_data.market}"
+                f" curr_price_buy: {curr_entry.price_buy}"
+                f" new_price_buy: {new_price_buy}"
+                f" curr_price_sell: {curr_entry.price_sell}"
+                f" new_price_sell: {new_price_sell}"))
 
-            if (new_price_buy < curr_entry.price_buy 
-                or new_location == curr_entry.location_buy):
-                logger.debug(f"Updating buying price for asset: {asset_data.name}"
-                             + f", market: {asset_data.market} to {new_price_buy}")
+            if (new_price_buy < curr_entry.price_buy
+                    or new_location == curr_entry.location_buy):
+                logger.debug(
+                    f"Updating buying price for asset: {asset_data.name}"
+                    f", market: {asset_data.market} to {new_price_buy}")
                 curr_entry.price_buy = new_price_buy
                 curr_entry.location_buy = new_location
 
             if (new_price_sell > curr_entry.price_sell
-                or new_location == curr_entry.location_sell):
-                logger.debug(f"Updating selling price for asset: {asset_data.name}"
-                             + f", market: {asset_data.market} to {new_price_sell}")
+                    or new_location == curr_entry.location_sell):
+                logger.debug(
+                    f"Updating selling price for asset: {asset_data.name}"
+                    f", market: {asset_data.market} to {new_price_sell}")
                 curr_entry.price_sell = new_price_sell
                 curr_entry.location_sell = new_location
 

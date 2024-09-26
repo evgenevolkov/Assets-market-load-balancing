@@ -41,13 +41,15 @@ prices_request_interval_s = float(config('PRICES_REQUEST_INTERVAL_S'))
 
 
 async def fetch_and_process_price(
-        price_fetcher: PriceFetcher, 
-        detector: ArbitrageDetector, asset: str, market: str):
+        price_fetcher: PriceFetcher, detector: ArbitrageDetector,
+        asset: str, market: str
+        ):
     """High-level function that runs infinite loop to fetch new price of
     an asset on specific market and check for arbitrage opportunity
     """
     while True:
-        asset_data = await price_fetcher.fetch_price(asset=asset, market=market)
+        asset_data = await price_fetcher.fetch_price(asset=asset,
+                                                     market=market)
         if asset_data:
             await detector.check_for_arbitrage(asset_data)
             async with semaphore:

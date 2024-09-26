@@ -24,27 +24,30 @@ class PriceFetcher:
             port: Optional[str] = None,
             protocol: Optional[str] = None,
             ):
-        self.prices_source_protocol = protocol or config('PRICES_SOURCE_PROTOCOL', default="http")
+        self.prices_source_protocol = (
+            protocol
+            or config('PRICES_SOURCE_PROTOCOL', default="http"))
         self.prices_source_host = host or config('PRICES_SOURCE_HOST')
         self.prices_source_port = port or config('PRICES_SOURCE_PORT')
         self._get_api_url_template()
 
     def _get_api_url_template(self) -> None:
         self.api_url_template: str = (
-            f"{self.prices_source_protocol}://{self.prices_source_host}:"
-            + f"{self.prices_source_port}"
-            + f"/price?asset_name={{asset}}&market={{market}}"
-            )
-
+            f"{self.prices_source_protocol}://{self.prices_source_host}"
+            f":{self.prices_source_port}/"
+            f"price?asset_name={{asset}}&market={{market}}")
 
     def get_api(self, asset, market) -> str:
         """construct api url reying on template and provided values"""
         return self.api_url_template.format(asset=asset, market=market)
 
-    async def fetch_price(self, asset: str, market: str) -> Union[schemas.AssetPriceFromApi, None]:
+    async def fetch_price(
+            self, asset: str, market: str
+            ) -> Union[schemas.AssetPriceFromApi, None]:
         asset_data = None
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
+            async with (httpx.AsyncClient(timeout=httpx.Timeout(10.0))
+                        as client):
                 api_url = self.get_api(asset=asset, market=market)
                 response = await client.get(api_url)
                 response.raise_for_status()
