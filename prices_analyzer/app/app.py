@@ -52,7 +52,7 @@ async def fetch_and_process_price(
             await detector.check_for_arbitrage(asset_data)
             async with semaphore:
                 asyncio.create_task(detector.price_update(asset_data))
-                await asyncio.sleep(delay=prices_request_interval_s) # not to ping same asset too often
+                await asyncio.sleep(delay=prices_request_interval_s)
 
 
 async def main():
