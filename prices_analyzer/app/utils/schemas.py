@@ -27,7 +27,16 @@ class PriceBase(BaseModel):
     price_buy: float = Field(gt=0)
     price_sell: float = Field(gt=0)
 
+    @field_validator('price_sell')
+    @classmethod
+    def validate_sell_price(
+            cls, price_sell: float, validation_info
+            ) -> float:
         """Ensure that selling price is higher that buying price"""
+        if price_sell >= validation_info.data['price_buy']:
+            raise ValueError('price_sell must be lower than price_buy')
+        return price_sell
+
 
 class PriceBaseAPI(BaseModel):
     """base price data; relies on mid price value and spread;
