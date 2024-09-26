@@ -1,3 +1,9 @@
+"""
+Core Arbitrage Detector Module
+
+Consists of a class, responsible for keeping track of highest and lowest
+detected prices and performing arbitrage detection
+"""
 import asyncio
 from typing import Dict, List
 
@@ -10,12 +16,12 @@ logger = get_logger(__name__)
 
 class ArbitrageDetector:
     """
-    Implements arbitrage detector. 
-    
+    Implements arbitrage detector.
+
     Functionality:
-    - Tracks lowest buying and highest selling prices detected, including 
-      market where price was detected.
-    - Provided a new price for an asset, detect arbitrage opportunity 
+    - Tracks lowest buying and highest selling prices detected,
+        including market where price was detected.
+    - Provided a new price for an asset, detect arbitrage opportunity
     """
 
     def __init__(self):
@@ -117,7 +123,8 @@ class ArbitrageDetector:
     async def _price_update_internal(self, asset_data: schemas.AssetPriceFromApi) -> None:
         """Implementation of price update.
         A price is updated in any of these cases:
-        1) the new price comes from the same market as currently stored value
+        1) the new price comes from the same market as currently stored
+            value
         2) the new buying price is lower than the stored one
         3) the new selling price is lower than the stored one
         """

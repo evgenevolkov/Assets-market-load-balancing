@@ -1,3 +1,8 @@
+"""Prices generator app main file
+
+Contains business logic and high level functions
+
+"""
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
@@ -17,9 +22,8 @@ thread_pool = ThreadPoolExecutor(max_workers=10)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """ 
-    Initializes assets manager and starts infinite prices updade task in the 
-    background.
+    """Initializes assets manager and starts infinite prices updade task
+    in the background.
     """
     config_filepath = get_config_filepath()
     app.state.assets_manager = assets_manager.AssetsManager(config_filepath)
@@ -30,8 +34,8 @@ async def lifespan(app: FastAPI):
 
 
 def start_background_tasks(app: FastAPI):
-    """Starts separate background tasks for updating the prices of each asset 
-    independently.
+    """Starts separate background tasks for updating the prices of each
+    asset independently.
     """
     assets_manager = app.state.assets_manager
 

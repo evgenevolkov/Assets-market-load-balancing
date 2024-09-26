@@ -1,3 +1,5 @@
+"""Module responsible for fetching data from an API endpoint
+"""
 import asyncio
 from decouple import config
 import httpx
@@ -10,8 +12,11 @@ logger = get_logger(__name__)
 
 
 class PriceFetcher:
-    """Class responsible for fetching price of an asset on a market from predefined API"""
+    """Class responsible for fetching price of an asset on a market from
+    predefined API.
 
+    Reads API url adress from .env but can be overridden on initialisation
+    """
     def __init__(
             self,
             host: str = None,
@@ -34,6 +39,7 @@ class PriceFetcher:
 
 
     def get_api(self, asset, market):
+        """construct api url reying on template and provided values"""
         return self.api_url_template.format(asset=asset, market=market)
 
 

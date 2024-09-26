@@ -1,3 +1,4 @@
+""" Utility function module"""
 # from concurrent.futures import ThreadPoolExecutor
 from ..utils.logger import get_logger
 import yaml
@@ -7,6 +8,7 @@ logger = get_logger(__name__)
 
 
 def load_yaml_file(file_path: str) -> dict:
+    """gracefully reads and parses yaml file"""
     try:
         with open(file_path, 'r') as file:
             return yaml.safe_load(file)

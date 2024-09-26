@@ -1,3 +1,4 @@
+"""Module responsible for logging """
 from decouple import config
 import logging
 
