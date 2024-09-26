@@ -1,6 +1,6 @@
 """ Utility function module"""
-from ..utils.logger import get_logger
 import yaml
+from ..utils.logger import get_logger
 
 
 logger = get_logger(__name__)

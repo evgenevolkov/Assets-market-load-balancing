@@ -1,6 +1,6 @@
 """Module responsible for logging """
-from decouple import config
 import logging
+from decouple import config
 
 
 logging_level = config('LOGGING_LEVEL')

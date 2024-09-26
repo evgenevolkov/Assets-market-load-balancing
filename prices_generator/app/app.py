@@ -6,8 +6,9 @@ Contains business logic and high level functions
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, status
 import random
+
+from fastapi import FastAPI, HTTPException, status
 
 from .core import assets_manager
 from .utils import schemas
