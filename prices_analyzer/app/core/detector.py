@@ -54,6 +54,8 @@ class ArbitrageDetector:
 
     def _initialize_prices(self) -> None:
         """Mocks getting initial prices for each asset"""
+        if not self.assets_list:
+            raise ValueError("No assets provided")
         for asset in self.assets_list:
             self.prices_dict[asset] = schemas.AssetData(
                 price_buy = float('inf'),
