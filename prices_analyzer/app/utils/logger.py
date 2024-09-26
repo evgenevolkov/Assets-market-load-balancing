@@ -17,6 +17,7 @@ def get_logger(name):
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
 
-    logger.setLevel(logging_level)
+    if logger.level == logging.NOTSET:
+        logger.setLevel(logging_level)
 
     return logger
