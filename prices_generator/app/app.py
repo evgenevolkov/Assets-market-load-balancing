@@ -1,6 +1,6 @@
 """Prices generator app main file
 
-Contains business logic and high level functions
+Contains business logic and high level functions.
 
 """
 import asyncio
@@ -49,8 +49,8 @@ def start_background_tasks(app: FastAPI):
 
 
 async def update_asset_price_loop(app: FastAPI, asset: schemas.Asset):
-    """
-    Independent infinite background task for updating a specific asset's price.
+    """Independent infinite background task for updating a specific
+    asset's price.
     """
     assets_manager = app.state.assets_manager
     while True:
