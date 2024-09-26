@@ -36,7 +36,7 @@ from .core.detector import ArbitrageDetector
 
 
 logger = get_logger(__name__)
-semaphore = asyncio.Semaphore(200)
+semaphore = asyncio.Semaphore(int(config('MAX_CONCURRENT_TASKS')))
 prices_request_interval_s = float(config('PRICES_REQUEST_INTERVAL_S'))
 
 
