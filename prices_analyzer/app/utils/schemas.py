@@ -9,10 +9,15 @@ class Asset(BaseModel):
     name: str
     market: str
 
+    class Config:  # pylint: disable=R0903
         """Make name and market immutable, trim whitespaces, prevent
         empty or too lengthy values
         """
         frozen = True
+        str_strip_whitespace = True
+        str_min_length = 1
+        str_max_length = 64
+
 
 class PriceBase(BaseModel):
     """base price data; relies on exact buy and sell values;
