@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import List
-from uuid import UUID, uuid4
 """Pydantic data validation schemas"""
 
 class Asset(BaseModel):
