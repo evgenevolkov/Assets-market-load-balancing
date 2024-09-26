@@ -64,16 +64,13 @@ class ArbitrageDetector:
         return
 
 
-    async def check_for_arbitrage(self, 
-                                  asset_price: schemas.AssetPriceFromApi) -> dict:
+    async def check_for_arbitrage(self,
+                                  asset_price: schemas.AssetPriceFromApi) -> schemas.ArbitrageDetectorResponse:
         """Compares provided asset price with current stored price and 
         provides a response indicating if an arbitrage opportunity is detected 
         """
 
-        response = {
-            "arbitrage_found": False  # Initial value
-            , "details": []           # Placeholder
-        }
+        response = schemas.ArbitrageDetectorResponse()
 
         async with self.lock:
             asset_data = self.prices_dict.get(asset_price.name, None)
@@ -94,7 +91,8 @@ class ArbitrageDetector:
                             + f", margin: {round(curr_price_sell - new_price_buy, 4)}")
                 response["details"].append({"message": message})
                 logger.info(message)
-                response["arbitrage_found"] = True
+                response.details.append({"message": message})
+                response.arbitrage_found = True
 
             if new_price_sell > curr_price_buy and asset_data.location_buy != new_location:
                 message = ("Arbitrage possibility detected:"
@@ -102,8 +100,8 @@ class ArbitrageDetector:
                             + f", sell at {new_location} for {new_price_sell}"
                             + f", margin: {round(new_price_sell - curr_price_buy, 4)}")
                 logger.info(message)
-                response["details"].append(message)
-                response["arbitrage_found"] = True
+                response.details.append({"message": message})
+                response.arbitrage_found = True
 
         return response
 
