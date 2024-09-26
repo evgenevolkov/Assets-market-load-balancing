@@ -1,12 +1,16 @@
-.PHONY: install start_analyzer start_generator build_generator_container \
-		start_generator_container stop_generator_container
+.PHONY: install start_generator_nginx start_generator_app start_analyzer \
+		build_generator_container start_generator_container \
+		stop_generator_container run_all_checks run_tests run_type_checks \
+		run_linting clean
 
 menu:
 	@echo "Select an option:"; \
-	select opt in "Start generator with Nginx" "Start generator as standalone app" \
+	select opt in "Start generator with Nginx" \
+				  "Start generator as standalone app" \
 				  "Start analyzer" "Build generator container" \
 				  "Start generator container" "Stop generator container" \
-				  "Run tests" "Clean" "Exit"; do \
+				  "Run all checks" "Run tests" "Run type checks" \
+				  "Run linting"  "Clean" "Exit"; do \
 	    case $$opt in \
 	        ("Start generator with Nginx") make start_generator_nginx; break;; \
 	        ("Start generator as standalone app") make start_generator_app; break;; \
@@ -14,7 +18,10 @@ menu:
 	        ("Build generator container") make build_generator_container; break;; \
 	        ("Start generator container") make start_generator_container; break;; \
 	        ("Stop generator container") make stop_generator_container; break;; \
+	        ("Run all checks") make run_all_checks; break;; \
 	        ("Run tests") make run_tests; break;; \
+	        ("Run type checks") make run_type_checks; break;; \
+			("Run linting") make run_linting; break;; \
 	        ("Clean") make clean; break;; \
 	        ("Exit") exit;; \
 	        (*) echo "Invalid option";; \
@@ -48,8 +55,18 @@ start_generator_container:
 stop_generator_container:
 	docker stop prices_generator || true
 
+run_all_checks: run_linting run_tests
+
 run_tests:
 	PYTHONPATH=$(shell pwd)/prices_generator pytest -s
+
+run_type_checks:
+	mypy prices_analyzer || true
+	mypy prices_generator || true
+
+run_linting:
+	pylint . || true
+	flake8 || true
 
 clean:
 	docker stop prices_generator || true
