@@ -1,5 +1,4 @@
 """ Utility function module"""
-# from concurrent.futures import ThreadPoolExecutor
 from ..utils.logger import get_logger
 import yaml
 
