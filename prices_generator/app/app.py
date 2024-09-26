@@ -27,7 +27,9 @@ async def lifespan(app: FastAPI):
     """
     config_filepath = get_config_filepath()
     app.state.assets_manager = assets_manager.AssetsManager(config_filepath)
-    logger.debug(app.state.assets_manager.prices_dict)
+    logger.debug(
+        "Assets manager initialized with prices: \n%s",
+        app.state.assets_manager.prices_dict)
 
     app.add_event_handler("startup", start_background_tasks(app))
     yield
