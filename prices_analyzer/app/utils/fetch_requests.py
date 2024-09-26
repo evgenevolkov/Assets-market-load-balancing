@@ -37,7 +37,7 @@ class PriceFetcher:
             )
 
 
-    def get_api(self, asset, market):
+    def get_api(self, asset, market) -> str:
         """construct api url reying on template and provided values"""
         return self.api_url_template.format(asset=asset, market=market)
 
