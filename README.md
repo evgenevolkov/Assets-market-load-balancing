@@ -2,7 +2,7 @@
 
 Simulation of assets markets and service to detect arbitrage possibilities between markets.
 
-(Arbitrage is a case, when buying price on one market is lower than selling price at different market for the same asset)
+(Arbitrage is a case, when buying price on one market is lower than selling price on a different market for the same asset)
 
 
 ## Consists of two applications: prices generator and prices analyzer
@@ -80,7 +80,7 @@ Git, Python, PIP, Docker, Nginx, Make
 
 `make install`
 
-Otherwise, manually create a virtual environment and install dependencies from `requirements.txt`
+Otherwise, manually create a virtual environment and install dependencies from `requirements.txt`.
 
 
 # How to use:
