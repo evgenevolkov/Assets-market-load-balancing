@@ -30,7 +30,7 @@ PRICES_REQUEST_INTERVAL_S (environment variable) - min timeout since
 import asyncio
 from decouple import config
 
-from .utils.fetch_requests import PriceFetcher 
+from .utils.fetch_requests import PriceFetcher
 from .utils.logger import get_logger
 from .core.detector import ArbitrageDetector
 
