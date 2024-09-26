@@ -12,8 +12,8 @@ def load_yaml_file(file_path: str) -> dict:
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             return yaml.safe_load(file)
-    except FileNotFoundError:
-        logger.error(f"Config file not found: {file_path}")
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {file_path}, error: {e}")
         raise
     except yaml.YAMLError as e:
         logger.error(f"Failed to parse YAML file {file_path}: {e}")
