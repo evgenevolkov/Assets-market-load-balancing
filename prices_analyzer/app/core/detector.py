@@ -48,12 +48,10 @@ class ArbitrageDetector:
             raise ValueError("No assets provided")
         for asset in self.assets_list:
             self.prices_dict[asset] = schemas.AssetData(
-                price_buy = float('inf'),
-                price_sell = 0.0,
-                location_buy = "US",
-                location_sell = "US"
-            )
-
+                price_buy=float('inf'),
+                price_sell=0.0,
+                location_buy="US",
+                location_sell="US")
 
     async def check_for_arbitrage(self,
                                   asset_price: schemas.AssetPriceFromApi) -> schemas.ArbitrageDetectorResponse:
