@@ -63,11 +63,11 @@ async def main():
     price_fetcher = PriceFetcher()
 
     # initialize task for each asset / market pair
-    tasks = []
-    for asset in detector.assets_list:
-        for market in detector.markets_list:
-            tasks.append(fetch_and_process_price(price_fetcher, detector, asset, market))
-
+    tasks = [
+        fetch_and_process_price(price_fetcher, detector, asset, market)
+        for asset in detector.assets_list
+        for market in detector.markets_list
+    ]
     await asyncio.gather(*tasks)
 
 
