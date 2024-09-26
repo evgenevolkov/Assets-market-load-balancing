@@ -44,6 +44,7 @@ class PriceFetcher:
     async def fetch_price(
             self, asset: str, market: str
             ) -> Union[schemas.AssetPriceFromApi, None]:
+        """try to get value from the endpoint"""
         asset_data = None
         try:
             async with (httpx.AsyncClient(timeout=httpx.Timeout(10.0))

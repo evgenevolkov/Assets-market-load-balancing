@@ -7,6 +7,7 @@ logging_level = config('LOGGING_LEVEL')
 
 
 def get_logger(name):
+    """Instantiates a logger with handler an formatting"""
     logger = logging.getLogger(name)
 
     if not logger.hasHandlers():
