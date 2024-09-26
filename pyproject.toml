@@ -1,0 +1,24 @@
+[tool.pylint."MESSAGES CONTROL"]
+disable = ["W1203"]
+ignore = [
+    "Dockerfile",
+    ".pytest_cache",
+    ".venv",
+    ".vscode",
+    "__pycache__",
+    "*.yml",
+    "*.yaml"]
+
+[tool.flake8]
+exclude = [
+  ".git",
+  "__pycache__",
+  ".pytest_cache",
+  ".venv",
+  ".vscode"
+]
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+exclude = "^(env|venv|cache)/"
+ignore_missing_imports = true

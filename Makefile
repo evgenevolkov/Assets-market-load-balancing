@@ -25,6 +25,7 @@ menu:
 install:
 	python3 -m venv .venv
 	./.venv/bin/pip install -r requirements.txt
+	./.venv/bin/pip install -r requirements-dev.txt
 	@mv prices_analyzer/.env.example prices_analyzer/.env
 	@mv prices_generator/.env.example prices_generator/.env
 
