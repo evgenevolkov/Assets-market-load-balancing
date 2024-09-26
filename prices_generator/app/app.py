@@ -19,7 +19,6 @@ logger = get_logger(__name__)
 thread_pool = ThreadPoolExecutor(max_workers=10)
 
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initializes assets manager and starts infinite prices updade task

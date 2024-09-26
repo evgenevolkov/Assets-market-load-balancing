@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 from typing import List
 """Pydantic data validation schemas"""
 
+
 class Asset(BaseModel):
     """base Asset properties. Used as foundation for construction more
     compound data schemas, e.g. asset price, etc."""

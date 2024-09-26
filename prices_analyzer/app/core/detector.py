@@ -33,7 +33,6 @@ class ArbitrageDetector:
         self._set_markets_list()
         self._initialize_prices()
 
-
     def _set_assets_list(self) -> None:
         """Mocks getting and storing a list of assets to track"""
         self.assets_list = ["Copper", "Oil"]
@@ -147,4 +146,3 @@ class ArbitrageDetector:
                 curr_entry.location_sell = new_location
 
             self.prices_dict[asset_data.name] = curr_entry
-

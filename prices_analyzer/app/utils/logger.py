@@ -5,6 +5,7 @@ import logging
 
 logging_level = config('LOGGING_LEVEL')
 
+
 def get_logger(name):
     logger = logging.getLogger(name)
 
