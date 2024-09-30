@@ -58,7 +58,8 @@ stop_generator_container:
 run_all_checks: run_linting run_tests
 
 run_tests:
-	PYTHONPATH=$(shell pwd)/prices_generator pytest -s
+	PYTHONPATH=$(shell pwd)/prices_generator pytest -s prices_generator/
+	PYTHONPATH=$(shell pwd)/prices_analyzer pytest -s prices_analyzer/
 
 run_type_checks:
 	mypy prices_analyzer || true
