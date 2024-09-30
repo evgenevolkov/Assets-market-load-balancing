@@ -22,3 +22,7 @@ exclude = [
 plugins = ["pydantic.mypy"]
 exclude = "^(env|venv|cache)/"
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-vv --tb=long"
